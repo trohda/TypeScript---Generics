@@ -41,3 +41,40 @@ function extractAndConvert<T extends object, U extends keyof T>(
 }
 
 console.log(extractAndConvert({ name: "Tomek" }, "name"));
+
+class DataStorage<T extends number | string | boolean> {
+  private data: T[] = [];
+
+  addItem(item: T) {
+    this.data.push(item);
+  }
+
+  removeItem(item: T) {
+    if (this.data.indexOf(item) === -1) {
+      return;
+    }
+    this.data.splice(this.data.indexOf(item), 1);
+  }
+
+  getItems() {
+    return [...this.data];
+  }
+}
+
+const textStorage = new DataStorage<string>();
+textStorage.addItem("Tomcio");
+textStorage.addItem("Gosiak");
+textStorage.removeItem("Tomcio");
+console.log(textStorage.getItems());
+
+const numberStorage = new DataStorage<number>();
+const combineStorage = new DataStorage<number | string>();
+
+// Problem z pracą z obiektami polega na tym że indexOf w przypadku Gosi sprawdzi referencję  i nie usunie Gosi. Taki kod powinien pracować tylko z number | string | boolean
+// const objStorage = new DataStorage<object>();
+// const tomekObj = { name: "Tomek" };
+// objStorage.addItem(tomekObj);
+// objStorage.addItem({ name: "Gosia" });
+// //...
+// objStorage.removeItem(tomekObj);
+// console.log(objStorage.getItems());
